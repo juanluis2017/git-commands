@@ -29,7 +29,7 @@ crea una nueva rama y se posiciona en ella
 ``` git checkout -b ```
 
 
-
+``` git add ```
 
 #### Git log
 
@@ -50,23 +50,39 @@ vuelve al commit anterior eliminado desde el commit -1 en adelante
 
 ``` git reset --soft HEAD~1 ```
 
-git clean -f
+
+``` git clean -f   ```
 
 #### git reset
 ------------------------------------------------------------------------
+este comando es un poco más complicado. De hecho, hace un par de cosas diferentes dependiendo de cómo se invoca. 
+Modifica el índice (el llamado "área de preparación"). O cambia a qué compromiso está apuntando actualmente un ramal. Este comando puede alterar el historial existente (al cambiar la confirmación a la que hace referencia una rama).
+
+
 se elimina todo el historial hasta el punto que se realiza el rollback
 
-git reset --hard 'hash commit especifico' 
+
+``` git reset --hard 'hash commit especifico'  ```
 
 otra opcion es
 
-git checkout 'hash commit especifico' 
+
+``` git checkout 'hash commit especifico' 
 git checkout -b new branch
-git push
+git push  
+```
+
+#### git revert
+
+Este comando crea una nueva confirmación que deshace los cambios de una confirmación previa. 
+Este comando agrega un nuevo historial al proyecto (no modifica el historial existente).
+
+
 ------------------------------------------------------------------------
 genera un nuevo commit sin perder el historial
 
-git reset --soft 'hash commit especifico' 
+
+``` git reset --soft 'hash commit especifico ```
 
 ------------------------------------------------------------------------
 Abort operations
