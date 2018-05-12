@@ -1,5 +1,13 @@
 ### git-commands-basics
 
+``` git status ```
+
+
+archivos que no deben ser almacenados en el control de carpeta
+
+``` git ignore ```
+
+
 trae los ultimos cambios del repositorio remoto
 
 ``` git pull ```
