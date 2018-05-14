@@ -1,5 +1,15 @@
 ### git-commands-basics
 
+entrega las diferencias de archivos modificados,agregados e eliminados.
+
+``` git diff release --name-status ```
+
+entrega las diferencias de archivos solo nombre
+
+```git diff release --name-only```
+
+
+
 ``` git status ```
 
 
@@ -77,6 +87,8 @@ se elimina todo el historial hasta el punto que se realiza el rollback
 
 
 ``` git reset --hard 'hash commit especifico'  ```
+
+
 
 vuelve un archivo desde staged a untraked
 ``` git reset HEAD 'nombre del archivo'  ```
