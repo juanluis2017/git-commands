@@ -124,5 +124,11 @@ Abort operations
 
 
 
+git merge integracion --no-ff -m "merge cristal R version 1.27.0" -X theirs
+
+git merge integracion --no-ff -m "merge cristal R version 1.27.0" -x theirs
+
+
+
 
 
