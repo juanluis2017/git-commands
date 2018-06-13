@@ -47,6 +47,10 @@ crea una nueva rama y se posiciona en ella
 ``` git checkout -b ```
 
 
+se posiciona localmente en commit especifico
+
+``` git checkout [hash commit] ```
+
 permite agregar nuevos archivos 
 
 ``` git add  'nombre-archivo'```
