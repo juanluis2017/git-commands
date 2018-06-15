@@ -4,6 +4,15 @@
 
 ``` docker version ```
 
+- generar imagen en docker
+
+``` docker build ./aci-helloworld -t aci-tutorial-app ```
+
+
+
+docker images
+```docker images ```
+
 lista imagenes disponibles
 
 ```docker ps ```
@@ -15,7 +24,6 @@ realiza stop a contenedor
 
 ``` docker ps -a ```
 
-docker images
 
 - Elimina una imagen de docker
 
