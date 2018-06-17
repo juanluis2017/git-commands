@@ -83,6 +83,6 @@ para subir una imagen existe a azure container registry se debe seguir los sigui
 
 
 
-
+docker push <acrLoginServer>/aci-tutorial-app:v1
 
 
