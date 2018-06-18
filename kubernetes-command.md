@@ -66,6 +66,9 @@ Revision de servicio en kubernetes
  
 ``` kubectl scale --replicas=5 deployment/azure-vote-front ```
 
+scale by metrics
+
+``` kubectl autoscale deployment azure-vote-front --cpu-percent=50 --min=3 --max=10 ```
 
 
 
