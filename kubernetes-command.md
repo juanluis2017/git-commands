@@ -1,3 +1,22 @@
+Definiciones Generales
+
+Docker: Docker is a software technology that provides operating-system-level virtualization to easily deploy applications in a sandbox (called containers) to run on Linux.
+
+Images: An image is a read-only template with the necessary instructions required for the application to run.
+
+Containers: Provides an isolated environment in which an app along with its environment is run.
+
+Kubernetes: Kubernetes is an open source system for managing containerized applications across multiple hosts, providing basic mechanisms for deployment, maintenance, and scaling of applications.
+
+Pods: A Pod is the basic building block of Kubernetes and represents a executable unit of work. A Pod usually contains a single container.
+
+Services: A service tells other pods about the services your application provides.
+
+Deployments: A Deployment controller provides declarative updates for Pods
+
+Kubernetes Manifest file: Kubernetes manifests with deployments, services and pods can be defined in json or yaml. The file extensions .yaml, .yml, and .json can be used.
+
+
 #### Kubernetes
 
 Kubernetes es un sistema open source (GitHub) creado por Google para la gestión de aplicaciones en contenedores, un sistema de 
