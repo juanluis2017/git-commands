@@ -49,6 +49,16 @@ Actualizar version de Kubernetes
 ``` az aks get-versions --name [ClusterName] --resource-group [myResourceGroup] --output table ```
 
 
+Levantar Servidor Kubernetes de forma Local
+
+``` az aks browse --resource-group [myResourceGroup]  --name [AKSName]  ```
+
+
+Desplegar Credenciales 
+
+``` az aks get-credentials –resource-group yourResourceGroup –name yourAKSname ```
+
+
 
 
 
