@@ -58,8 +58,9 @@ Desplegar Credenciales
 
 ``` az aks get-credentials –resource-group yourResourceGroup –name yourAKSname ```
 
+Revision de servicio en kubernetes
 
-
+``` kubectl get service mhc-front --watch ```
 
 
 
