@@ -36,6 +36,22 @@ la monitorización de nuestros contenedores, entre muchas otras más.
 ![CI/CD con Aks y Vsts](https://almvm.azurewebsites.net/labs/vstsextend/kubernetes/)
 
 
+Escalar un Cluster de Kubernetes
 
 ``` az aks scale --name [clusterName] --resource-group [myResourceGroup] --agent-count [numero de instancias] ```
+
+Obtener la version actual de Kubernetes
+
+``` az aks get-versions --name [ClusterName] --resource-group [myResourceGroup] --output table ```
+
+Actualizar version de Kubernetes
+
+``` az aks get-versions --name [ClusterName] --resource-group [myResourceGroup] --output table ```
+
+
+
+
+
+
+
 
