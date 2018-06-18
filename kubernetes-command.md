@@ -62,6 +62,12 @@ Revision de servicio en kubernetes
 
 ``` kubectl get service mhc-front --watch ```
 
+ scale pod
+ 
+``` kubectl scale --replicas=5 deployment/azure-vote-front ```
+
+
+
 
 
 
