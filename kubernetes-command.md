@@ -68,7 +68,13 @@ Revision de servicio en kubernetes
 
 scale by metrics
 
-``` kubectl autoscale deployment azure-vote-front --cpu-percent=50 --min=3 --max=10 ```
+``` kubectl autoscale deployment [site to scale] --cpu-percent=50 --min=3 --max=10 ```
+
+retorna consumo actul de los distintos pods que esta en modo run
+
+``` kubectl get hpa  ```
+
+
 
 
 
