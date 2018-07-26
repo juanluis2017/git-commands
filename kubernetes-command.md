@@ -36,6 +36,11 @@ la monitorización de nuestros contenedores, entre muchas otras más.
 ![CI/CD con Aks y Vsts](https://almvm.azurewebsites.net/labs/vstsextend/kubernetes/)
 
 
+Creacion de un cluster Kubernetes AKS
+
+``` az aks create --resource-group myAKSCluster --name myAKSCluster --node-count 1 --generate-ssh-keys ```
+
+
 Escalar un Cluster de Kubernetes
 
 ``` az aks scale --name [clusterName] --resource-group [myResourceGroup] --agent-count [numero de instancias] ```
