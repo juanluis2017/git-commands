@@ -128,3 +128,30 @@ kubectl get pods -o json | jq '.items[].spec.containers[].env[]?.valueFrom.secre
 
 #### List Events sorted by timestamp
 kubectl get events --sort-by=.metadata.creationTimestamp
+
+
+
+creacion de cluster kubernetes
+
+```az aks create -g RG_automotriz_AKS -n AutomotrizAKSCluster --generate-ssh-keys ```
+
+lista cluster kubernetes
+
+```az aks list -o table ```
+
+
+lista de subredes
+
+```az network vnet subnet list --resource-group RG_VPN--vnet-name VNET-AZR-DMZ-DEV--query [].id --output tsv```
+
+creacion de cluster kubernetes asociado a una red especifica
+
+``` az aks create --resource-group RG_AutomotrizAKS  --name AutomotrizAKS  --network-plugin azure --vnet-subnet-id 293c1183-8b08-4bbd-9f28-e042fd037525 --docker-bridge-address 172.17.0.1/16 --dns-service-ip 10.2.0.10 --service-cidr 10.2.0.0/24 ```
+
+obtener credenciales de kubernetes
+
+``` az aks get-credentials --resource-group RG_automotriz_AKS --name AutomotrizAKS ```
+
+levantar Kubernetes
+
+```az aks browse --resource-group RG_automotriz_AKS --name AutomotrizAKS ```
