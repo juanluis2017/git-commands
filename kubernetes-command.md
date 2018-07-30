@@ -61,7 +61,7 @@ Levantar Servidor Kubernetes de forma Local
 
 Desplegar Credenciales 
 
-``` az aks get-credentials –resource-group yourResourceGroup –name yourAKSname ```
+``` az aks get-credentials –resource-group yourResourceGroup –-name yourAKSname ```
 
 Revision de servicio en kubernetes
 
