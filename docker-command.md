@@ -79,10 +79,21 @@ para subir una imagen existe a azure container registry se debe seguir los sigui
 ``` docker login myregistry.azurecr.io -u xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx -p myPassword ```
 
 
-7  subir imagen docker a contenedor de registro ACR
+7  generar tag imagen docker para contenedor de registro ACR
+
+
+```docker tag aci-tutorial-app1 acrautomotriz.azurecr.io/imagenprueba:dev ```
+
+
+8  subir imagen docker a contenedor de registro ACR
 
 
 ```docker push <acrLoginServer>/aci-tutorial-app:v1 ```
+
+
+9 Descargar imagen de azure ACR
+
+ ``` docker pull acrautomotriz.azurecr.io/imagenprueba:dev ```
 
  ###### Crear grupo de recursos
  
