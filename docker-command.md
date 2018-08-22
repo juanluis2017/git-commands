@@ -94,6 +94,10 @@ para subir una imagen existe a azure container registry se debe seguir los sigui
 9 Descargar imagen de azure ACR
 
  ``` docker pull acrautomotriz.azurecr.io/imagenprueba:dev ```
+ 
+ 10 subir una imagen haci kubernetes
+ 
+``` kubectl apply -f azure-vote-all-in-one-redis.yaml ```
 
  ###### Crear grupo de recursos
  
