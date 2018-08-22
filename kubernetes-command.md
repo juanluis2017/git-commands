@@ -47,7 +47,7 @@ Escalar un Cluster de Kubernetes
 
 Obtener la version actual de Kubernetes
 
-``` az aks get-versions --name [ClusterName] --resource-group [myResourceGroup] --output table ```
+```  az aks get-versions --location westus --output table ```
 
 Actualizar version de Kubernetes
 
@@ -61,7 +61,7 @@ Levantar Servidor Kubernetes de forma Local
 
 Desplegar Credenciales 
 
-``` az aks get-credentials –resource-group yourResourceGroup –-name yourAKSname ```
+``` az aks get-credentials –-name yourAKSname -–resource-group yourResourceGroup  ```
 
 Revision de servicio en kubernetes
 
