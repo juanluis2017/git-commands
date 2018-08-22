@@ -74,6 +74,11 @@ para subir una imagen existe a azure container registry se debe seguir los sigui
 
 ``` docker tag aci-tutorial-app <acrLoginServer>/aci-tutorial-app:v1 ```
 
+6  subir imagen docker a contenedor de registro ACR
+
+
+```docker push <acrLoginServer>/aci-tutorial-app:v1 ```
+
  ###### Crear grupo de recursos
  
 ``` az group create --name myResourceGroup --location eastus ```
@@ -82,7 +87,5 @@ para subir una imagen existe a azure container registry se debe seguir los sigui
 
 
 
-
-docker push <acrLoginServer>/aci-tutorial-app:v1
 
 
