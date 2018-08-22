@@ -76,7 +76,9 @@ para subir una imagen existe a azure container registry se debe seguir los sigui
 
 6  hacer login en Contenedor de imagenes azure
 
-``` az acr login --name <acrName> ```
+``` docker login myregistry.azurecr.io -u xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx -p myPassword ```
+
+
 7  subir imagen docker a contenedor de registro ACR
 
 
