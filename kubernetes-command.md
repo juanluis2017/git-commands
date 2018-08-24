@@ -88,6 +88,9 @@ modifica el contexto a otro cluster
 
 ``` kubectl config use-context my-cluster-name ```
 
+describe configuracion actual del pod
+``` kubectl describe deployment 'pod-name' ```
+
 #### Get commands with basic output
 kubectl get services                          # List all services in the namespace
 kubectl get pods --all-namespaces             # List all pods in all namespaces
