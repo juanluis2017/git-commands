@@ -16,69 +16,102 @@ az acr repository list --name <acrName> --output table
   
   az acr repository show-tags --name <acrName> --repository <image name> --output table
   
-  
-  
   ---
-title: Authenticate with Azure Container Registry from Azure Container Instances
-description: Learn how to provide access to images in your private container registry from Azure Container Instances by using an Azure Active Directory service principal.
-services: container-registry
+title: Authenticate with Azure Container Registry from Azure Kubernetes Service
+description: Learn how to provide access to images in your private container registry from Azure Kubernetes Service by using an Azure Active Directory service principal.
+services: container-service
 author: mmacy
 manager: jeconnoc
 
-ms.service: container-registry
+ms.service: container-service
 ms.topic: article
-ms.date: 04/23/2018
+ms.date: 08/08/2018
 ms.author: marsma
 ---
 
-# Authenticate with Azure Container Registry from Azure Container Instances
+# Authenticate with Azure Container Registry from Azure Kubernetes Service
 
-You can use an Azure Active Directory (Azure AD) service principal to provide access to your private container registries in Azure Container Registry.
+When you're using Azure Container Registry (ACR) with Azure Kubernetes Service (AKS), an authentication mechanism needs to be established. This article details the recommended configurations for authentication between these two Azure services.
 
-In this article, you learn to create and configure an Azure AD service principal with *pull* permissions to your registry. Then, you start a container in Azure Container Instances (ACI) that pulls its image from your private registry, using the service principal for authentication.
+## Grant AKS access to ACR
 
-## When to use a service principal
+When you create an AKS cluster, Azure also creates a service principal to support cluster operability with other Azure resources. You can use this auto-generated service principal for authentication with an ACR registry. To do so, you need to create an Azure AD [role assignment](../role-based-access-control/overview.md#role-assignment) that grants the cluster's service principal access to the container registry.
 
-You should use a service principal for authentication from ACI in **headless scenarios**, such as in applications or services that create container instances in an automated or otherwise unattended manner.
+Use the following script to grant the AKS-generated service principal access to an Azure container registry. Modify the `AKS_*` and `ACR_*` variables for your environment before running the script.
 
-For example, if you have an automated script that runs nightly and creates a [task-based container instance](../container-instances/container-instances-restart-policy.md) to process some data, it can use a service principal with pull-only (Reader) permissions to authenticate to the registry. You can then rotate the service principal's credentials or revoke its access completely without affecting other services and applications.
+```bash
+#!/bin/bash
 
-Service principals should also be used when the registry [admin user](container-registry-authentication.md#admin-account) is disabled.
+AKS_RESOURCE_GROUP=myAKSResourceGroup
+AKS_CLUSTER_NAME=myAKSCluster
+ACR_RESOURCE_GROUP=myACRResourceGroup
+ACR_NAME=myACRRegistry
 
-[!INCLUDE [container-registry-service-principal](../../includes/container-registry-service-principal.md)]
+# Get the id of the service principal configured for AKS
+CLIENT_ID=$(az aks show --resource-group $AKS_RESOURCE_GROUP --name $AKS_CLUSTER_NAME --query "servicePrincipalProfile.clientId" --output tsv)
 
-## Authenticate using the service principal
+# Get the ACR registry resource id
+ACR_ID=$(az acr show --name $ACR_NAME --resource-group $ACR_RESOURCE_GROUP --query "id" --output tsv)
 
-To launch a container in Azure Container Instances using a service principal, specify its ID for `--registry-username`, and its password for `--registry-password`.
-
-```azurecli-interactive
-az container create \
-    --resource-group myResourceGroup \
-    --name mycontainer \
-    --image mycontainerregistry.azurecr.io/myimage:v1 \
-    --registry-login-server mycontainerregistry.azurecr.io \
-    --registry-username <service-principal-ID> \
-    --registry-password <service-principal-password>
+# Create role assignment
+az role assignment create --assignee $CLIENT_ID --role Reader --scope $ACR_ID
 ```
 
-## Sample scripts
+## Access with Kubernetes secret
 
-You can find the preceding sample scripts for Azure CLI on GitHub, as well versions for Azure PowerShell:
+In some instances, you might not be able to assign the required role to the auto-generated AKS service principal granting it access to ACR. For example, due to your organization's security model, you might not have sufficient permission in your Azure AD directory to assign a role to the AKS-generated service principal. In such a case, you can create a new service principal, then grant it access to the container registry using a Kubernetes image pull secret.
 
-* [Azure CLI][acr-scripts-cli]
-* [Azure PowerShell][acr-scripts-psh]
+Use the following script to create a new service principal (you'll use its credentials for the Kubernetes image pull secret). Modify the `ACR_NAME` variable for your environment before running the script.
 
-## Next steps
+```bash
+#!/bin/bash
 
-The following articles contain additional details on working with service principals and ACR:
+ACR_NAME=myacrinstance
+SERVICE_PRINCIPAL_NAME=acr-service-principal
 
-* [Azure Container Registry authentication with service principals](container-registry-auth-service-principal.md)
-* [Authenticate with Azure Container Registry from Azure Kubernetes Service (AKS)](container-registry-auth-aks.md)
+# Populate the ACR login server and resource id.
+ACR_LOGIN_SERVER=$(az acr show --name $ACR_NAME --query loginServer --output tsv)
+ACR_REGISTRY_ID=$(az acr show --name $ACR_NAME --query id --output tsv)
 
-<!-- IMAGES -->
+# Create a 'Reader' role assignment with a scope of the ACR resource.
+SP_PASSWD=$(az ad sp create-for-rbac --name $SERVICE_PRINCIPAL_NAME --role Reader --scopes $ACR_REGISTRY_ID --query password --output tsv)
 
-<!-- LINKS - External -->
-[acr-scripts-cli]: https://github.com/Azure/azure-docs-cli-python-samples/tree/master/container-registry
-[acr-scripts-psh]: https://github.com/Azure/azure-docs-powershell-samples/tree/master/container-registry
+# Get the service principal client id.
+CLIENT_ID=$(az ad sp show --id http://$SERVICE_PRINCIPAL_NAME --query appId --output tsv)
 
-<!-- LINKS - Internal -->
+# Output used when creating Kubernetes secret.
+echo "Service principal ID: $CLIENT_ID"
+echo "Service principal password: $SP_PASSWD"
+```
+
+You can now store the service principal's credentials in a Kubernetes [image pull secret][image-pull-secret], which your AKS cluster will reference when running containers.
+
+Use the following **kubectl** command to create the Kubernetes secret. Replace `<acr-login-server>` with the fully qualified name of your Azure container registry (it's in the format "acrname.azurecr.io"). Replace `<service-principal-ID>` and `<service-principal-password>` with the values you obtained by running the previous script. Replace `<email-address>` with any well-formed email address.
+
+```bash
+kubectl create secret docker-registry acr-auth --docker-server <acr-login-server> --docker-username <service-principal-ID> --docker-password <service-principal-password> --docker-email <email-address>
+```
+
+You can now use the Kubernetes secret in pod deployments by specifying its name (in this case, "acr-auth") in the `imagePullSecrets` parameter:
+
+```yaml
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: acr-auth-example
+spec:
+  template:
+    metadata:
+      labels:
+        app: acr-auth-example
+    spec:
+      containers:
+      - name: acr-auth-example
+        image: myacrregistry.azurecr.io/acr-auth-example
+      imagePullSecrets:
+      - name: acr-auth
+```
+
+<!-- LINKS - external -->
+[kubernetes-secret]: https://kubernetes.io/docs/concepts/configuration/secret/
+[image-pull-secret]: https://kubernetes.io/docs/concepts/configuration/secret/#using-imagepullsecrets
