@@ -75,9 +75,13 @@ scale by metrics
 
 ``` kubectl autoscale deployment [site to scale] --cpu-percent=50 --min=3 --max=10 ```
 
-eliminar un POD
+Elimina un POD pero es recreado 
 
 ``` kubectl delete pod [podname] ``` 
+
+
+Eliminar un POD
+``` kubectl delete pods [podname] --force  ``` 
 
 
 retorna consumo actul de los distintos pods que esta en modo run
